@@ -66,7 +66,6 @@ dependencies {
 
     // Retrofit network library. Also includes converter library for Moshi
     implementation "com.squareup.retrofit2:retrofit: $version_retrofit"
-    implementation "com.squareup.retrofit2:converter-scalars:$version_retrofit"
     implementation "com.squareup.retrofit2:converter-moshi:$version_retrofit"
 
     // Moshi JSON converter library
