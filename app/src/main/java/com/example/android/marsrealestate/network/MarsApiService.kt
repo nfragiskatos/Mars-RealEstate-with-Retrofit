@@ -50,7 +50,7 @@ interface MarsApiService {
     The value is an endpoint for the JSON response. Retrofit appends the "realestate" string to the base url
      */
     @GET("realestate")
-    fun getProperties(): Call<String>
+    fun getProperties(): Call<List<MarsProperty>>
 
     /**
     Expose the retrofit service to the rest of the application.
