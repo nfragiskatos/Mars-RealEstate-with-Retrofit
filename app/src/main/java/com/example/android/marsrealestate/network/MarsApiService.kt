@@ -17,21 +17,27 @@
 
 package com.example.android.marsrealestate.network
 
+import com.squareup.moshi.Moshi
+import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import retrofit2.Call
 import retrofit2.Retrofit
-import retrofit2.converter.scalars.ScalarsConverterFactory
-import retrofit2.create
+import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
 
 private const val BASE_URL = "https://mars.udacity.com/"
 
 /**
+ * Similar to what we did with [Retrofit] we want to create a [Moshi] object using the [Moshi] builder.
+ *
+ * We need the [KotlinJsonAdapterFactory] in order for Moshi to work properly with Kotlin.
+ */
+private val moshi = Moshi.Builder().add(KotlinJsonAdapterFactory()).build()
+
+/**
 Build up the retrofit object.
 Give it the converter factory and the url of the resource we are trying to reach.
  */
-private val retrofit =
-        Retrofit.Builder().addConverterFactory(ScalarsConverterFactory.create()).baseUrl(BASE_URL)
-                .build()
+private val retrofit = Retrofit.Builder().addConverterFactory(MoshiConverterFactory.create(moshi)).baseUrl(BASE_URL).build()
 
 /**
 Service interface API to be given to retrofit so it can build the service for us.
