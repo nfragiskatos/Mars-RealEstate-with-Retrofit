@@ -17,4 +17,22 @@
 
 package com.example.android.marsrealestate.network
 
-class MarsProperty
+import com.squareup.moshi.Json
+
+/**
+ * This will be a data class to store parsed JSON results.
+ *
+ * This is used by the Moshi library.
+ *
+ * Typically the property names must match what's in the JSON object, but you can use the @Json annotation to customize.
+ *
+ * Here's an example JSON response from the API
+ *
+ *  {
+ *      "price":8000000,
+ *      "id":"424906",
+ *      "type":"rent",
+ *      "img_src":"http://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000ML0044631300305227E03_DXXX.jpg"
+ *  }
+ */
+data class MarsProperty(val id: String, @Json(name = "img_src") val imgSrcUrl: String, val type: String, val price: Double)
