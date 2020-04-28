@@ -17,7 +17,9 @@
 
 package com.example.android.marsrealestate.network
 
+import android.os.Parcelable
 import com.squareup.moshi.Json
+import kotlinx.android.parcel.Parcelize
 
 /**
  * This will be a data class to store parsed JSON results.
@@ -34,5 +36,19 @@ import com.squareup.moshi.Json
  *      "type":"rent",
  *      "img_src":"http://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000ML0044631300305227E03_DXXX.jpg"
  *  }
+ *
+ *  One of the goals of this object is to be able to pass it between fragments. Specifically between the [OverviewFragment] and
+ *  the [DetailFragment]. Since this is a complex object, and not just a simple value like integer or String, Android requires it
+ *  to be turned into a Parcel (or Bundle for multiple objects).
+ *  [MarsProperty] needs to extend the [Parcelable] interface.
+ *  We can implement it manually, or have Android Studio implement it for us but there is still some overhead associated with
+ *  either approach, because when creating and reading from Parcels, the arguments must always be written and read in the exact
+ *  order.
+ *  We would normally implement those methods., but if the object changes over time and new arguments are added we have
+ *  to make sure that the read + write methods are still correct.
+ *  Anyway, we can use the [Parcelize] annotation instead to manage all that for us, and we don't have to even have any
+ *  implementation code.
  */
-data class MarsProperty(val id: String, @Json(name = "img_src") val imgSrcUrl: String, val type: String, val price: Double)
+@Parcelize
+data class MarsProperty(val id: String, @Json(name = "img_src") val imgSrcUrl: String, val type: String, val price: Double) :
+        Parcelable
