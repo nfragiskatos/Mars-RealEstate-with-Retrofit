@@ -37,10 +37,10 @@ class OverviewViewModel : ViewModel() {
         get() = _status
 
     // MarsProperty to be loaded (just a single item for now.
-    private val _property = MutableLiveData<MarsProperty>()
+    private val _properties = MutableLiveData<MarsProperty>()
 
-    val property: LiveData<MarsProperty>
-        get() = _property
+    val properties: LiveData<MarsProperty>
+        get() = _properties
 
     /**
      * Need a job and scope now since we are working with Coroutines
@@ -68,7 +68,7 @@ class OverviewViewModel : ViewModel() {
             {
                 var listResult = getPropertiesDeferred.await()
                 if (listResult.size > 0) {
-                    _property.value = listResult[0]
+                    _properties.value = listResult[0]
                 }
             } catch (e: Exception)
             {
