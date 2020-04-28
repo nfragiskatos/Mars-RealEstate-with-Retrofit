@@ -37,7 +37,7 @@ class OverviewViewModel : ViewModel() {
     private val _status = MutableLiveData<MarsApiStatus>()
 
     // The external immutable LiveData for the request status String
-    val response: LiveData<MarsApiStatus>
+    val status: LiveData<MarsApiStatus>
         get() = _status
 
     // MarsProperty to be loaded (just a single item for now.
@@ -70,6 +70,7 @@ class OverviewViewModel : ViewModel() {
             val getPropertiesDeferred = MarsApiService.MarsApi.retrofitService.getProperties()
             try {
                 _status.value = MarsApiStatus.LOADING
+
                 var listResult = getPropertiesDeferred.await()
                 _status.value = MarsApiStatus.DONE
                 _properties.value = listResult
