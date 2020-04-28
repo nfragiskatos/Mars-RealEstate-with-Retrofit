@@ -37,9 +37,9 @@ class OverviewViewModel : ViewModel() {
         get() = _status
 
     // MarsProperty to be loaded (just a single item for now.
-    private val _properties = MutableLiveData<MarsProperty>()
+    private val _properties = MutableLiveData<List<MarsProperty>>()
 
-    val properties: LiveData<MarsProperty>
+    val properties: LiveData<List<MarsProperty>>
         get() = _properties
 
     /**
@@ -64,14 +64,10 @@ class OverviewViewModel : ViewModel() {
     private fun getMarsRealEstateProperties() {
         coroutineScope.launch {
             val getPropertiesDeferred = MarsApiService.MarsApi.retrofitService.getProperties()
-            try
-            {
+            try {
                 var listResult = getPropertiesDeferred.await()
-                if (listResult.size > 0) {
-                    _properties.value = listResult[0]
-                }
-            } catch (e: Exception)
-            {
+                _properties.value = listResult
+            } catch (e: Exception) {
                 _status.value = "Failure: ${e.message}"
             }
         }
@@ -80,8 +76,7 @@ class OverviewViewModel : ViewModel() {
     /**
      * Want to make sure we cancel the [Job] when the [OverviewViewModel] is destroyed since the [OverviewFragment] will be gone.
      */
-    override fun onCleared()
-    {
+    override fun onCleared() {
         super.onCleared()
         coroutineScope.cancel()
     }
