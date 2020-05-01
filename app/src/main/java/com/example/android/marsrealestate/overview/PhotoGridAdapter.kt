@@ -29,14 +29,15 @@ import com.example.android.marsrealestate.network.MarsProperty
  * Custom implementation of a [ListAdapter] that works specifically on [MarsProperty] objects.
  * Also uses a custom implementation of [DiffUtil.ItemCallback] that the [ListAdapter] requires to compare [MarsProperty] objects
  */
-class PhotoGridAdapter : ListAdapter<MarsProperty, PhotoGridAdapter.MarsPropertyViewHolder>(DiffCallback) {
+class PhotoGridAdapter(private val onClickListener: OnClickListener) :
+        ListAdapter<MarsProperty, PhotoGridAdapter.MarsPropertyViewHolder>(DiffCallback) {
 
     /**
      * Mostly boilerplate code.
      * Just need to make sure we return a [PhotoGridAdapter.MarsPropertyViewHolder] which is our custom implementation of
      * [RecyclerView.ViewHolder].
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PhotoGridAdapter.MarsPropertyViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MarsPropertyViewHolder {
         return MarsPropertyViewHolder(GridViewItemBinding.inflate(LayoutInflater.from(parent.context)))
     }
 
@@ -50,15 +51,22 @@ class PhotoGridAdapter : ListAdapter<MarsProperty, PhotoGridAdapter.MarsProperty
      * @param holder The ViewHolder we are trying to populate with information.
      * @param position The position of the current working item.
      */
-    override fun onBindViewHolder(holder: PhotoGridAdapter.MarsPropertyViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MarsPropertyViewHolder, position: Int) {
         val marsProperty = getItem(position)
+        holder.itemView.setOnClickListener {
+            onClickListener.onClick(marsProperty)
+        }
         holder.bind(marsProperty)
+    }
+
+    class OnClickListener(val clickListener: (marsProperty: MarsProperty) -> Unit) {
+        fun onClick(marsProperty: MarsProperty) = clickListener(marsProperty)
     }
 
     /**
      * Custom implementation of [RecyclerView.ViewHolder] to be used by the [PhotoGridAdapter]
      *
-     * The [GridViewItemBinding] is a reference to the variable declared in the [grid_view_item.xml] layout.
+     * The [GridViewItemBinding] is a reference to the variable declared in the grid_view_item.xml layout.
      */
     class MarsPropertyViewHolder(private var binding: GridViewItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
@@ -78,7 +86,7 @@ class PhotoGridAdapter : ListAdapter<MarsProperty, PhotoGridAdapter.MarsProperty
      * The [ListAdapter] needs to know how to compare the different values in its backing list. Therefore we create this
      * implementation of, essentially, a comparator to give to the [ListAdapter]
      */
-    companion object DiffCallback :DiffUtil.ItemCallback<MarsProperty>() {
+    companion object DiffCallback : DiffUtil.ItemCallback<MarsProperty>() {
 
         /***
          * This compares the references to make sure they are indeed referring to the same object.
