@@ -30,7 +30,7 @@ import com.example.android.marsrealestate.overview.PhotoGridAdapter
 
 /**
  * The [BindingAdapter.value] annotation property establishes an xml app property we can use to specifically reference this function
- * e.g. In [fragment_overview] we use app:marsApiStatus="..."
+ * e.g. In fragment_overview we use app:marsApiStatus="..."
  *
  * @param statusImageView This is the handle to the layout view we are binding information to. The binding knows that this function
  * will be an extension of the [ImageView] view
@@ -62,7 +62,6 @@ fun bindRecyclerView(recyclerView: RecyclerView, data: List<MarsProperty>?) {
 }
 
 
-
 @BindingAdapter("imageUrl")
 fun bindImage(imgView: ImageView, imgUrl: String?) {
     imgUrl?.let {
@@ -70,7 +69,7 @@ fun bindImage(imgView: ImageView, imgUrl: String?) {
          * Glide requires a URI, not just a String, so we can use the toUri extension function to
          * build up a URI object, and then use Glide's fluent interface to load the view.
          */
-        val imgUri = it.toUri().buildUpon().scheme("https").build();
+        val imgUri = it.toUri().buildUpon().scheme("https").build()
         Glide.with(imgView.context)
                 .load(imgUri)
                 .apply(RequestOptions().placeholder(R.drawable.loading_animation).error(R.drawable.ic_broken_image)).into(imgView)
