@@ -37,8 +37,8 @@ import kotlinx.android.parcel.Parcelize
  *      "img_src":"http://mars.jpl.nasa.gov/msl-raw-images/msss/01000/mcam/1000ML0044631300305227E03_DXXX.jpg"
  *  }
  *
- *  One of the goals of this object is to be able to pass it between fragments. Specifically between the [OverviewFragment] and
- *  the [DetailFragment]. Since this is a complex object, and not just a simple value like integer or String, Android requires it
+ *  One of the goals of this object is to be able to pass it between fragments. Specifically between the OverviewFragment and
+ *  the DetailFragment. Since this is a complex object, and not just a simple value like integer or String, Android requires it
  *  to be turned into a Parcel (or Bundle for multiple objects).
  *  [MarsProperty] needs to extend the [Parcelable] interface.
  *  We can implement it manually, or have Android Studio implement it for us but there is still some overhead associated with
@@ -51,4 +51,6 @@ import kotlinx.android.parcel.Parcelize
  */
 @Parcelize
 data class MarsProperty(val id: String, @Json(name = "img_src") val imgSrcUrl: String, val type: String, val price: Double) :
-        Parcelable
+        Parcelable {
+    val isRental = type == "rent"
+}
