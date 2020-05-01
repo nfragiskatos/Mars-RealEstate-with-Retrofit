@@ -24,8 +24,11 @@ import kotlinx.coroutines.Deferred
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 import retrofit2.http.GET
+import retrofit2.http.Query
 
 private const val BASE_URL = "https://mars.udacity.com/"
+
+enum class MarsApiFilter(val value: String) {SHOW_RENT("rent"), SHOW_BUY("buy"), SHOW_ALL("all")}
 
 /**
  * Similar to what we did with [Retrofit] we want to create a [Moshi] object using the [Moshi] builder.
@@ -56,7 +59,7 @@ interface MarsApiService {
     The value is an endpoint for the JSON response. Retrofit appends the "realestate" string to the base url
      */
     @GET("realestate")
-    fun getProperties(): Deferred<List<MarsProperty>>
+    fun getProperties(@Query("filter") type: String): Deferred<List<MarsProperty>>
 
     /**
     Expose the retrofit service to the rest of the application.
